@@ -1,21 +1,21 @@
-docker-ubuntu-r
+docker-ubuntu-julia
 ===============
 
-Ubuntu image intended for dockerized R development.
+Ubuntu image intended for dockerized Julia development.
 
 ### Some properties
 
 * Sets up `user` (with sudo rights) so that the container does not need to
   run as root.
-* Sets up `/home` for `user` and some basic options in `.Rprofile` and
-  `.bashrc` which should be changed to your own needs.
-* Installs all recommended `R` dependencies, pulls `R-devel` from `SVN` and
-  compiles `R-devel` from source.
+* Sets up `/home` for `user` and some basic options `.bashrc` and
+  `.inputrc` which should be adapted to your own needs.
+* Installs all recommended `Julia` dependencies, pulls `Julia` from
+  `Github` and compiles `Julia` from source.
 
 There is a nice and semi-easy way of getting graphical output from a
 Docker container without having to run an sshd daemon inside of the
 container. Docker can provide bare metal performance when running a single
-process which in this case is supposed to be R. Running an sshd daemon
+process which in this case is supposed to be Julia. Running an sshd daemon
 will, marginal as it may be, introduce additional overhead. This is not
 made better by running the sshd daemon as a child process of the
 supervisor daemon. Both can be dispensed with when one makes good use of
@@ -37,13 +37,13 @@ docker run -i -t --rm \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 # - v bind mounts the `X11` socket `/tmp/.X11-unix` into `/tmp/.X11-unix`
 # in the container.
---name="rdev" ubuntu-r1 R
-# --name="" specify the name of the container (here "rdev"); the image you
-# want to run the container from (here "ubuntu-r"); the process you want
-# to run in the container (here "R").
+--name="jdev" ubuntu-j
+# --name="" specify the name of the container (here "jdev"); the image you
+# want to run the container from (here "ubuntu-j"); the process you want
+# to run in the container (here "Julia").
 ```
 
-After issuing this command you should be looking at the beautiful `R`
+After issuing this command you should be looking at the beautiful `Julia`
 start output. If you were to try `demo(graphics)` to see if graphical
 output is already working you would note that it is not. That is because
 of the `Xsecurity` extension preventing you from accessing the socket. You
