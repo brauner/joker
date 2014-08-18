@@ -28,6 +28,7 @@ RUN apt-get install -y --no-install-recommends wget
 # Download julia from Github
 RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 # Compile julia from source
+RUN cd /tmp/julia && ./configure --prefix=/usr/local
 RUN cd /tmp/julia && make && make install
 
 # Set root passwd; change passwd accordingly
