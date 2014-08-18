@@ -31,8 +31,8 @@ docker run -i -t --rm \
 -e DISPLAY=$DISPLAY \
 # sets the host display to the local machines display (which will usually
 # be :0)
--u chbr \
-# -u specify the process should be run by a user (here "chbr") and not by
+-u chbj \
+# -u specify the process should be run by a user (here "chbj") and not by
 # root. This step is important (v.i.)!
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 # - v bind mounts the `X11` socket `/tmp/.X11-unix` into `/tmp/.X11-unix`
