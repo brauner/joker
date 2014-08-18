@@ -7,27 +7,26 @@ RUN apt-get update -qq
 # Run full system upgrade
 RUN apt-get dist-upgrade -y
 
-# Install some tools to make life with R easier
 RUN apt-get install -y software-properties-common
-
+# Some basic tools
 RUN apt-get install -y --no-install-recommends mupdf
-# Needed in order to download recommended R packages later on
 RUN apt-get install -y --no-install-recommends vim
-RUN apt-get install -y --no-install-recommends wget
 
 # Julia dependencies and other useful packages
 RUN apt-get install -y --no-install-recommends bash-completion
 RUN apt-get install -y --no-install-recommends bison
+RUN apt-get install -y --no-install-recommends curl
 RUN apt-get install -y --no-install-recommends debhelper
 RUN apt-get install -y --no-install-recommends g++
 RUN apt-get install -y --no-install-recommends gcc
 RUN apt-get install -y --no-install-recommends gfortran
 RUN apt-get install -y --no-install-recommends git
-RUN apt-get install -y --no-install-recommends wget
-RUN apt-get install -y --no-install-recommends curl
 RUN apt-get install -y --no-install-recommends m4
+RUN apt-get install -y --no-install-recommends wget
 
+# Download julia from Github
 RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
+# Compile julia from source
 RUN cd /tmp/julia && make && make install
 
 # Set root passwd; change passwd accordingly
@@ -56,4 +55,6 @@ RUN cd && printf "# If not running interactively, don't do anything\n[[ \$- != *
 # Set vi-editing mode for R
 RUN cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj/.inputrc
 
+# Make julia start everytime the a container is started from the resulting
+# image
 CMD ["/usr/local/bin/julia"]
