@@ -22,6 +22,7 @@ RUN apt-get install -y --no-install-recommends g++
 RUN apt-get install -y --no-install-recommends gfortran
 RUN apt-get install -y --no-install-recommends git
 RUN apt-get install -y --no-install-recommends m4
+RUN apt-get install -y --no-install-recommends python
 RUN apt-get install -y --no-install-recommends wget
 
 # Download julia from Github
