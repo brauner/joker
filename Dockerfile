@@ -63,4 +63,5 @@ RUN cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj/.in
 
 # Make julia start everytime the a container is started from the resulting
 # image
-CMD ["/usr/local/bin/julia"]
+CMD []
+ENTRYPOINT ["/usr/local/bin/julia"]
