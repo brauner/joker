@@ -35,6 +35,15 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 RUN cd /tmp/julia && printf "prefix=/usr/local\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
+# 3D support through /dev/dri
+RUN apt-get install -y --no-install-recommends mesa-utils
+# put appropriate dirver for your distribution here:
+RUN apt-get install -y --no-install-recommends i965-va-driver
+RUN apt-get install -y --no-install-recommends libegl1-mesa
+RUN apt-get install -y --no-install-recommends libgl1-mesa-dri
+RUN apt-get install -y --no-install-recommends libgl1-mesa-glx
+RUN apt-get install -y --no-install-recommends libopenvg1-mesa
+
 # Set root passwd; change passwd accordingly
 RUN echo "root:test" | chpasswd
 
