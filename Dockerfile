@@ -32,7 +32,7 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 # # Use specific Julia version by using a specific tag
 # RUN cd /tmp/julia && cd julia && git checkout v0.3.0-rc4
 # Compile julia from source
-RUN cd /tmp/julia && printf "prefix=/usr/local\n" > Make.user
+RUN cd /tmp/julia && printf "prefix=/usr/local\n\nJULIA_CPU_TARGET=core2\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
 # 3D support through /dev/dri
