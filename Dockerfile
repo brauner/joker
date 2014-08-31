@@ -35,8 +35,9 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 RUN cd /tmp/julia && printf "prefix=/usr/local\n\nJULIA_CPU_TARGET=core2\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
-# 3D support through /dev/dri. Note this will not happen automatically.
-# You will need to add the device when you run your container.
+# 3D support through /dev/dri. Note that this will not happen
+# automatically. You will need to add the devices in /dev/dri when you run
+# your container.
 RUN apt-get install -y --no-install-recommends mesa-utils
 # put appropriate dirver for your distribution here:
 RUN apt-get install -y --no-install-recommends i965-va-driver
