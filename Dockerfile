@@ -27,12 +27,10 @@ RUN apt-get install -y --no-install-recommends wget
 
 # Download julia from Github
 RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
-# # Use specific Julia version by following specific release
-# RUN cd /tmp/julia && git checkout release-0.3
-# # Use specific Julia version by using a specific tag
-# RUN cd /tmp/julia && cd julia && git checkout v0.3.0-rc4
 # Compile julia from source
-RUN cd /tmp/julia && printf "prefix=/usr/local\n\nJULIA_CPU_TARGET=core2\n" > Make.user
+# Set JULIA_CPU_TARGET flag to your needs. Otherwise you will run into
+# trouble running this on your system.
+RUN cd /tmp/julia && printf "prefix=/usr/local\n\nJULIA_CPU_TARGET=ivybridge\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
 # 3D support through /dev/dri. Note that this will not happen
