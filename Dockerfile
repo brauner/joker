@@ -30,7 +30,7 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 # Compile julia from source
 # Set JULIA_CPU_TARGET flag to your needs. Otherwise you will run into
 # trouble running this on your system.
-RUN cd /tmp/julia && printf "prefix=/usr/local\n\nJULIA_CPU_TARGET=ivybridge\n" > Make.user
+RUN cd /tmp/julia && printf "prefix=/usr/local\n\nMARCH=ivybridge\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
 # 3D support through /dev/dri. Note that this will not happen
