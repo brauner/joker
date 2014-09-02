@@ -28,8 +28,9 @@ RUN apt-get install -y --no-install-recommends wget
 # Download julia from Github
 RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git
 # Compile julia from source
-# Set JULIA_CPU_TARGET flag to your needs. Otherwise you will run into
-# trouble running this on your system.
+# Set MARCH flag to your needs as it will be passed to ./configure and the
+# JULIA_CPU_TARGET flag wich determines options for the JIT. If you fail
+# to do so you might not be able to run Julia on your system.
 RUN cd /tmp/julia && printf "prefix=/usr/local\n\nMARCH=core-avx-i\n" > Make.user
 RUN cd /tmp/julia && make && make install
 
