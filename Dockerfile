@@ -62,16 +62,13 @@ ENV HOME /home/chbj
 WORKDIR /home/chbj
 USER chbj
 
-# set standard repository to download packages from
-RUN cd && printf "options(repos=structure(c(CRAN='http://stat.ethz.ch/CRAN/')))\n" > /home/chbj/.Rprofile
-
 # set vim as default editor; vi-editing mode for bash
 RUN cd && printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/chbj/.bashrc
 
 # Set vi-editing mode for R
 RUN cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj/.inputrc
 
-# Make julia start everytime the a container is started from the resulting
-# image
+# Make julia run as default process. This is for Docker 1.2 for Docker 1.3
+# this will change and the CMD [] will not be needed anymore.
 CMD []
 ENTRYPOINT ["/usr/local/bin/julia"]
