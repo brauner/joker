@@ -45,10 +45,22 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git \
     && cd /tmp/julia && printf "prefix=/usr/local\n\nMARCH=core-avx-i\n" > Make.user \
     && cd /tmp/julia && make && make install
 
+# Add user so that no root-login is required; change username and password
+# accordingly
+RUN echo "root:test" | chpasswd \
+    && useradd -m chbj3 \
+    && echo "chbj3:test" | chpasswd \
+    && usermod -s /bin/bash chbj3 \
+    && usermod -aG sudo chbj3 \
+    && locale-gen en_IE.UTF-8 \
+# set vim as default editor; vi-editing mode for bash
+    && cd && printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/chbj3/.bashrc \
+# Set vi-editing mode for R
+    && cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj3/.inputrc
+ENV LANG en_IE.UTF-8
+ENV HOME /home/chbj3
+WORKDIR /home/chbj3
+USER chbj3
 
-# Set root passwd; change passwd accordingly
-RUN echo "root:test" | chpasswd
-
-# Change to your needs
-RUN 
-
+# Make R run as default process.
+ENTRYPOINT ["/usr/local/bin/julia"]
