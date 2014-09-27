@@ -48,19 +48,19 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git \
 # Add user so that no root-login is required; change username and password
 # accordingly
 RUN echo "root:test" | chpasswd \
-    && useradd -m chbj3 \
-    && echo "chbj3:test" | chpasswd \
-    && usermod -s /bin/bash chbj3 \
-    && usermod -aG sudo chbj3 \
+    && useradd -m chbj \
+    && echo "chbj:test" | chpasswd \
+    && usermod -s /bin/bash chbj \
+    && usermod -aG sudo chbj \
     && locale-gen en_IE.UTF-8 \
 # set vim as default editor; vi-editing mode for bash
-    && cd && printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/chbj3/.bashrc \
+    && cd && printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/chbj/.bashrc \
 # Set vi-editing mode for R
-    && cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj3/.inputrc
+    && cd && printf "set editing-mode vi\n\nset keymap vi-command" > /home/chbj/.inputrc
 ENV LANG en_IE.UTF-8
-ENV HOME /home/chbj3
-WORKDIR /home/chbj3
-USER chbj3
+ENV HOME /home/chbj
+WORKDIR /home/chbj
+USER chbj
 
 # Make R run as default process.
 ENTRYPOINT ["/usr/local/bin/julia"]
