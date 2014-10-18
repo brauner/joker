@@ -52,6 +52,8 @@ RUN echo "root:test" | chpasswd \
     && echo "chbj:test" | chpasswd \
     && usermod -s /bin/bash chbj \
     && usermod -aG sudo chbj \
+    && groupmod -g 91 video \
+    && usermod -aG 91 video chbj \
     && locale-gen en_IE.UTF-8 \
 # set vim as default editor; vi-editing mode for bash
     && cd && printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/chbj/.bashrc \
