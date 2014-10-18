@@ -74,3 +74,10 @@ usually be installed on your system. If not install it. It can be found
 `util-linux` (version must be at least `2.23`). You can use the command
 `nsenter --target PID-you-just-found-out --mount --ipc --net --pid` or the
 short version `nsenter -t PID-you-just-found-out -m -i -n -p`.
+
+### Entering a running container with `docker exec`
+As of release `1.3.` the recommended way of entering a running container
+is by using `docker exec -it rdev bash` (`rdev` is the name of the running
+container  and `bash` the program which is supposed to be run in the
+container in this example.) which will spawn a new process in the running
+container.
