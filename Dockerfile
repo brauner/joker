@@ -52,6 +52,9 @@ RUN echo "root:test" | chpasswd \
     && echo "chbj:test" | chpasswd \
     && usermod -s /bin/bash chbj \
     && usermod -aG sudo chbj \
+# On my system the gid of group video is 91. I need to change gid of group
+# video on ubuntun in order to allow access to video devices then I add
+# them to the container.
     && groupmod -g 91 video \
     && usermod -aG 91 video chbj \
     && locale-gen en_IE.UTF-8 \
