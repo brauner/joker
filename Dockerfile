@@ -25,7 +25,7 @@ RUN apt-get update -qq && apt-get install -y \
 # automatically. You will need to add the devices in /dev/dri when you run
 # your container.
     mesa-utils \
-# put appropriate dirver for your distribution here:
+# put appropriate driver for your distribution here:
     i965-va-driver \
     libegl1-mesa \
     libgl1-mesa-dri \
@@ -43,7 +43,8 @@ RUN cd /tmp && git clone git://github.com/JuliaLang/julia.git \
 # JULIA_CPU_TARGET flag wich determines options for the JIT. If you fail
 # to do so you might not be able to run Julia on your system.
     && cd /tmp/julia && printf "prefix=/usr/local\n\nMARCH=core-avx-i\n" > Make.user \
-    && cd /tmp/julia && make && make install && make distclean
+    && cd /tmp/julia && make && make install && make distclean \
+    && cd /tmp && rm -rf julia
 
 # Add user so that no root-login is required; change username and password
 # accordingly
