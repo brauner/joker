@@ -37,7 +37,7 @@ libopenvg1-mesa
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 # Use specific Julia version by following specific release
-# && cd /tmp/julia \
+&& cd /tmp/julia \
 # && git checkout release-0.3 \
 # Compile julia from source
 # Set MARCH flag to your needs as it will be passed to ./configure and the
