@@ -5,8 +5,7 @@ docker-ubuntu-julia
 The images have `Julia` set as their default entrypoint. Hence, they
 behave like `Julia` binaries. This means that you can easily pass options
 such as `p -4` to the entrypoint just like you would when you install
-`Julia` locally. There are some folders which have `_sandybridge` appended
-to them. You can use those for 
+`Julia` locally.
 
 ### Some properties
 
