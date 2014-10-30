@@ -1,16 +1,31 @@
 docker-ubuntu-julia
 ===============
 
-Ubuntu image intended for dockerized Julia development.
+`Docker` images for `Julia` based on the official `Ubuntu` minimal build.
+The images have `Julia` set as their default entrypoint. Hence, they
+behave like `Julia` binaries. This means that you can easily pass options
+such as `p -4` to the entrypoint just like you would when you install
+`Julia` locally. There are some folders which have `_sandybridge` appended
+to them. You can use those for 
 
 ### Some properties
 
-* Sets up `user` (with sudo rights) so that the container does not need to
+* All images are available as automated builds from `Docker Hub`. You can
+  just pull them with `docker pull lordgarbage/docker-ubuntu-julia` and
+  `docker pull lordgarbage/docker-ubuntu-julia3`.
+* The generic `Julia` images which reside in the `julia` and `julia_0.3`
+  folders are compiled with `MARCH` set to `core2` which will make them
+  run on almost any system. To see how to adapt the image to a specific
+  `architecture` by setting the `MARCH` flag in `Make.user` take a look at
+  the `Dockerfiles` which reside in the folders which have `_sandybridge`
+  appended to them. There you can also see how to enable `3D` support and
+  various other tweaks.
+* Set up `user` (with sudo rights) so that the container does not need to
   run as root.
-* Sets up `/home` for `user` and some basic options `.bashrc` and
-  `.inputrc` which should be adapted to your own needs.
-* Installs all recommended `Julia` dependencies, pulls `Julia` from
-  `Github` and compiles `Julia` from source.
+* Set up `/home` for `user`.
+* Install all recommended `Julia` dependencies, pull `Julia` or `Julia
+  0.3` from `Github` and compile `Julia` or `Julia 0.3` from source.
+* The `Julia` binaries reside in `/usr/local/bin/julia`.
 
 There is a nice and semi-easy way of getting graphical output from a
 Docker container without having to run an sshd daemon inside of the
