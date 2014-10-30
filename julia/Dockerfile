@@ -27,6 +27,7 @@ RUN apt-get update -qq \
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 && cd /tmp/julia \
+&& printf "prefix=/usr/local\n\nMARCH=core2\n" > Make.user \
 && make \
 && make install \
 && rm -rf /tmp/julia
