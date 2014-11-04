@@ -16,7 +16,7 @@ such as `p -4` to the entrypoint just like you would when you install
   folders are compiled with `MARCH` set to `core2` which will make them
   run on almost any system. To see how to adapt the image to a specific
   `architecture` by setting the `MARCH` flag in `Make.user` take a look at
-  the `Dockerfiles` which reside in the folders which have `_sandybridge`
+  the `Dockerfiles` which reside in the folders which have `_ivybridge`
   appended to them. There you can also see how to enable `3D` support and
   various other tweaks.
 * Set up `user` (with sudo rights) so that the container does not need to
