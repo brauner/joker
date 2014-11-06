@@ -2,62 +2,45 @@ FROM ubuntu:latest
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-# Update repos
 RUN apt-get update -qq \
-&& apt-get install -y \
-   software-properties-common \
-&& apt-get install -y --no-install-recommends \
-# Some basic tools
-   mupdf \
-   vim \
-# Julia dependencies and other useful packages
-   bash-completion \
-   bison \
-   curl \
-   debhelper \
    gcc \
    g++ \
    gfortran \
-   git \
    m4 \
-   python \
+   make \
+   mupdf \
+   patch \
+   vim-tiny \
    wget \
-# 3D support through /dev/dri. Note that this will not happen
-# automatically. You will need to add the devices in /dev/dri when you run
-# your container.
+# 3D support
    mesa-utils \
-# put appropriate driver for your distribution here:
    i965-va-driver \
    libegl1-mesa \
    libgl1-mesa-dri \
    libgl1-mesa-glx \
-   libopenvg1-mesa
+   libopenvg1-mesa \
+&& apt-get clean
 
-# Download julia from Github
-RUN cd /tmp \
+RUN apt-get install -y --no-install-recommends git \
+&& cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
-# Use specific Julia version by following specific release
 && cd /tmp/julia \
-# && git checkout release-0.3 \
-# Compile julia from source
-# Set MARCH flag to your needs as it will be passed to ./configure and the
-# JULIA_CPU_TARGET flag wich determines options for the JIT. If you fail
-# to do so you might not be able to run Julia on your system.
 && printf "prefix=/usr/local\n\nMARCH=core-avx-i\n" > Make.user \
 && make \
 && make install \
-&& rm -rf /tmp/julia
+&& rm -rf /tmp/julia \
+&& apt-get autoremove -y git \
+&& apt-get clean
 
-# Add user so that no root-login is required; change username and password
-# accordingly
+# Add user
 RUN echo "root:test" | chpasswd \
 && useradd -m j \
 && echo "j:test" | chpasswd \
 && usermod -s /bin/bash j \
 && usermod -aG sudo j \
 # On my system the gid of group video is 91. I need to change gid of group
-# video on ubuntun in order to allow access to video devices then I add
-# them to the container.
+# video on ubuntu in order to allow access to video devices when I add them to
+# the container.
 && groupmod -g 91 video \
 && usermod -aG video j \
 && locale-gen en_IE.UTF-8 \
@@ -72,5 +55,4 @@ ENV HOME /home/j
 WORKDIR /home/j
 USER j
 
-# Make julia run as default process.
 ENTRYPOINT ["/usr/local/bin/julia"]

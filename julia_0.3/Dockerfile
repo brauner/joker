@@ -2,39 +2,33 @@ FROM ubuntu:latest
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-# Update repos
 RUN apt-get update -qq \
-&& apt-get install -y \
-   software-properties-common \
 && apt-get install -y --no-install-recommends \
-# Some basic tools
-   mupdf \
-   vim \
-# Julia dependencies and other useful packages
    bash-completion \
-   bison \
-   curl \
-   debhelper \
    gcc \
    g++ \
    gfortran \
-   git \
    m4 \
-   python \
-   wget
+   make \
+   mupdf \
+   patch \
+   vim-tiny \
+   wget \
+&& apt-get clean
 
-# Download julia from Github
-RUN cd /tmp \
+RUN apt-get install -y --no-install-recommends git \
+&& cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 && cd /tmp/julia \
 && git checkout release-0.3 \
 && printf "prefix=/usr/local\n\nMARCH=core2\n" > Make.user \
 && make \
 && make install \
-&& rm -rf /tmp/julia
+&& rm -rf /tmp/julia \
+&& apt-get autoremove -y git \
+&& apt-get clean
 
-# Add user so that no root-login is required; change username and password
-# accordingly
+# Add user
 RUN echo "root:test" | chpasswd \
 && useradd -m j3 \
 && echo "j3:test" | chpasswd \
@@ -45,5 +39,4 @@ ENV HOME /home/j3
 WORKDIR /home/j3
 USER j3
 
-# Make julia run as default process.
 ENTRYPOINT ["/usr/local/bin/julia"]
