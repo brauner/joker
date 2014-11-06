@@ -11,6 +11,7 @@ RUN apt-get update -qq \
    make \
    mupdf \
    patch \
+   python \
    vim-tiny \
    wget \
 # 3D support
