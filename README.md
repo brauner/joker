@@ -19,13 +19,41 @@ such as `p -4` to the entrypoint just like you would when you install
   the `Dockerfiles` which reside in the folders which have `_ivybridge`
   appended to them. There you can also see how to enable `3D` support and
   various other tweaks.
-* Set up `user` (with sudo rights) so that the container does not need to
-  run as root.
+* Set up `user` so that the container does not need to run as root.
 * Set up `/home` for `user`.
 * Install all recommended `Julia` dependencies, pull `Julia` or `Julia
   0.3` from `Github` and compile `Julia` or `Julia 0.3` from source.
 * The `Julia` binaries reside in `/usr/local/bin/julia`.
 
+### Workflow & Julia Library and Package Management
+If you mainly run `julia` as an ephemeral interactive container and
+install new packages you will need to commit the newly created layer to
+your image before you quit in order to have the packages you install
+available via `using` when you start the container again. To circumvent
+this I suggest sharing volumes between your `julia` containers in the
+following manner:
+
+* Create an extremely tiny container from the `busybox` image exposing a
+  folder `.julia` with the right permissions which you share via the
+  `--volumes-from=DATACONTAINERNAME` flag among your `julia` containers.
+  You will find the `Dockerfile` for this in the folder `libraries` and
+  the image on `Docker Hub`. You can pull it with `docker pull
+  lordgarbage/julia-libraries`.
+* Run `docker run --name=JULIADATA DATACONTAINERNAME true`
+* Run `docker run --volumes-from = JULIADATA JULIACONTAINERNAME`
+
+Now you can install packages into `JULIADATA` without having to commit the
+container as data containers are handled differently by Docker. If you
+pull a new `julia` image you can just keep running it with your libraries
+still intact. Should a new `julia` version come out that requires
+upgrading all libraries you can just remove your `JULIADATA` container
+which will also remove all installed packages and start a new one.
+
+* If you still want to install a package ephemerally which gets deleted
+  when your `julia` container exits. You can edit your library path for
+  the current session.
+
+### Graphical Output from Docker Containers
 There is a nice and semi-easy way of getting graphical output from a
 Docker container without having to run an sshd daemon inside of the
 container. Docker can provide bare metal performance when running a single
@@ -78,9 +106,15 @@ using `xauth` and `.Xauthority` files to grant access to the `X11` socket
 (see `man xauth`). This however will also involve a little more knowledge
 how `X` works.
 
-### Entering a running container with `nsenter`
+### Entering a running container with `docker exec`
+As of release `1.3.` the recommended way of entering a running container
+is by using `docker exec -it rdev bash` (`rdev` is the name of the running
+container  and `bash` the program which is supposed to be run in the
+container in this example.) which will spawn a new process in the running
+container.
 
-Should you need to enter a running container with a new `tty` you should
+### Entering a running container with `nsenter`
+Should you need to enter a running container with a new `tty` you can also
 use nsenter. First find the `PID` of the (main) process running in the
 container by either issuing `docker top containername` or `docker inspect
 --format {{.State.Pid}} containername`. Then use `nsenter` which should
@@ -88,10 +122,3 @@ usually be installed on your system. If not install it. It can be found
 `util-linux` (version must be at least `2.23`). You can use the command
 `nsenter --target PID-you-just-found-out --mount --ipc --net --pid` or the
 short version `nsenter -t PID-you-just-found-out -m -i -n -p`.
-
-### Entering a running container with `docker exec`
-As of release `1.3.` the recommended way of entering a running container
-is by using `docker exec -it rdev bash` (`rdev` is the name of the running
-container  and `bash` the program which is supposed to be run in the
-container in this example.) which will spawn a new process in the running
-container.
