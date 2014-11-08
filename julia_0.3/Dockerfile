@@ -31,13 +31,14 @@ RUN apt-get install -y --no-install-recommends git \
 
 # Add user
 RUN echo "root:test" | chpasswd \
-&& useradd -m j3 \
-&& echo "j3:test" | chpasswd \
-&& usermod -s /bin/bash j3 \
-&& usermod -aG sudo j3
+&& useradd -u 1000 -m docker \
+&& echo "docker:test" | chpasswd \
+&& usermod -s /bin/bash docker \
+&& usermod -a -G 100 docker
+# && usermod -a -G sudo docker
 
-ENV HOME /home/j3
-WORKDIR /home/j3
-USER j3
+ENV HOME /home/docker
+WORKDIR /home/docker
+USER docker
 
 ENTRYPOINT ["/usr/local/bin/julia"]

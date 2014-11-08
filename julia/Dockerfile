@@ -28,13 +28,14 @@ RUN apt-get install -y --no-install-recommends git \
 && apt-get clean
 
 RUN echo "root:test" | chpasswd \
-&& useradd -m j \
-&& echo "j:test" | chpasswd \
-&& usermod -s /bin/bash j \
-&& usermod -aG sudo j
+&& useradd -u 1000 -m docker \
+&& echo "docker:test" | chpasswd \
+&& usermod -s /bin/bash docker \
+&& usermod -a -G 100 docker
+# && usermod -a -G sudo docker
 
-ENV HOME /home/j
-WORKDIR /home/j
-USER j
+ENV HOME /home/docker
+WORKDIR /home/docker
+USER docker
 
 ENTRYPOINT ["/usr/local/bin/julia"]
