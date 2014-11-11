@@ -2,20 +2,21 @@ FROM ubuntu:latest
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-RUN apt-get update -qq \
+RUN apt-get update -qq -y \
 && apt-get install -y --no-install-recommends \
+   bzip2 \
+   cmake \
    gcc \
    g++ \
    gfortran \
    git \
    m4 \
    make \
-   mupdf \
    patch \
    python \
-   vim-tiny \
    wget \
-&& apt-get clean
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \

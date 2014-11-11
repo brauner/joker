@@ -1,19 +1,22 @@
-FROM ubuntu:latest
+FROM debootstrap/debian:testing
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-RUN apt-get update -qq \
+RUN printf "\ndeb http://ftp.de.debian.org/debian testing main contrib non-free\n deb-src http://ftp.de.debian.org/debian testing main contrib non-free\n\n deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n\n deb http://security.debian.org/ jessie/updates main contrib non-free\n deb-src http://security.debian.org/ jessie/updates main contrib non-free\n" > etc/apt/sources.list \
+&& export DEBIAN_FRONTEND=noninteractive \
+&& apt-get update -qq -y \
 && apt-get install -y --no-install-recommends \
+   bzip2 \
+   cmake \
+   debian-keyring \
    gcc \
    g++ \
    gfortran \
    git \
    m4 \
    make \
-   mupdf \
    patch \
    python \
-   vim-tiny \
    wget \
 # 3D support
    mesa-utils \
@@ -23,13 +26,14 @@ RUN apt-get update -qq \
    libgl1-mesa-glx \
    libopenvg1-mesa \
    libglu1-mesa-dev \
-&& apt-get clean
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 && cd /tmp/julia \
 && git checkout release-0.3 \
-&& printf "prefix=/usr/local\n\nMARCH=core-avx-i\n" > Make.user \
+&& printf "prefix=/usr/local\n\nMARCH=native\n" > Make.user \
 && make \
 && make install \
 && rm -rf /tmp/julia
@@ -46,6 +50,7 @@ RUN echo "root:test" | chpasswd \
 # the container.
 && groupmod -g 91 video \
 && usermod -a -G video docker \
+&& printf "en_IE.UTF-8 UTF-8\n" >> etc/locale.gen \
 && locale-gen en_IE.UTF-8 \
 # set vim as default editor; vi-editing mode for bash
 && cd \
