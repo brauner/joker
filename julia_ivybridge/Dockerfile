@@ -8,11 +8,11 @@ RUN printf "\ndeb http://ftp.de.debian.org/debian testing main contrib non-free\
 && apt-get install -y --no-install-recommends \
    bzip2 \
    cmake \
-   debian-keyring \
    gcc \
    g++ \
    gfortran \
    git \
+   locales \
    m4 \
    make \
    patch \
@@ -27,7 +27,8 @@ RUN printf "\ndeb http://ftp.de.debian.org/debian testing main contrib non-free\
    libopenvg1-mesa \
    libglu1-mesa-dev \
 && apt-get clean \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& rm -rf /usr/share/locale/*
 
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
