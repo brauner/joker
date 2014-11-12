@@ -40,8 +40,7 @@ RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 && cd /tmp/julia \
 && printf "prefix=/usr/local\n" > Make.user \
-&& printf "\nMARCH=ivybridge" > Make.user \
-&& printf "\nARCH=x86_64\n" > Make.user \
+&& printf "\nMARCH=ivybridge\n" > Make.user \
 && make \
 && make install \
 && cd \
