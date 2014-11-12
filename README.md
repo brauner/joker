@@ -10,13 +10,13 @@ such as `p -4` to the entrypoint just like you would when you install
 ### Some properties
 
 * All images are available as automated builds from `Docker Hub`. You can
-  just pull them with `docker pull lordgarbage/docker-ubuntu-julia` and
-  `docker pull lordgarbage/docker-ubuntu-julia3`.
-* The generic `Julia` images which reside in the `julia` and `julia_0.3`
+  just pull them with `docker pull lordgarbage/julia` and
+  `docker pull lordgarbage/julia3`.
+* The generic `Julia` images which reside in the `julia` and `julia3`
   folders are compiled with `MARCH` set to `core2` which will make them
   run on almost any system. To see how to adapt the image to a specific
   `architecture` by setting the `MARCH` flag in `Make.user` take a look at
-  the `Dockerfiles` which reside in the folders which have `_ivybridge`
+  the `Dockerfiles` which reside in the folders which have `ivy`
   appended to them. There you can also see how to enable `3D` support and
   various other tweaks.
 * Set up `user` so that the container does not need to run as root.
@@ -36,9 +36,9 @@ following manner:
 * Create an extremely tiny container from the `busybox` image exposing a
   folder `.julia` with the right permissions which you share via the
   `--volumes-from=DATACONTAINERNAME` flag among your `julia` containers.
-  You will find the `Dockerfile` for this in the folder `libraries` and
+  You will find the `Dockerfile` for this in the folder `jlib` and
   the image on `Docker Hub`. You can pull it with `docker pull
-  lordgarbage/julia-libraries`.
+  lordgarbage/jlib`.
 * Run `docker run --name=JULIADATA DATACONTAINERNAME true`
 * Run `docker run --volumes-from = JULIADATA JULIACONTAINERNAME`
 
