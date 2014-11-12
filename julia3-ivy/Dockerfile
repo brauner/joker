@@ -1,4 +1,4 @@
-FROM debootstrap/debian:testing
+FROM lordgarbage/debian:testing
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
@@ -41,7 +41,7 @@ RUN cd /tmp \
 && cd /tmp/julia \
 && git checkout release-0.3 \
 && printf "prefix=/usr/local\n\nMARCH=native\n" > Make.user \
-&& make \
+&& make -j 4\
 && make install \
 && cd \
 && rm -rf /tmp/julia
