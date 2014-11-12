@@ -42,6 +42,7 @@ RUN cd /tmp \
 && printf "prefix=/usr/local\n\nMARCH=native\n" > Make.user \
 && make \
 && make install \
+&& cd \
 && rm -rf /tmp/julia
 
 # Add user
