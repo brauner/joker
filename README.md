@@ -1,4 +1,4 @@
-docker-ubuntu-julia
+joker
 ===============
 
 `Docker` images for `Julia` based on the official `Ubuntu` minimal build.
