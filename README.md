@@ -10,8 +10,8 @@ such as `p -4` to the entrypoint just like you would when you install
 ### Some properties
 
 * All images are available as automated builds from `Docker Hub`. You can
-  just pull them with `docker pull lordgarbage/julia` and
-  `docker pull lordgarbage/julia3`.
+  just pull them with `docker pull brauner/julia` and
+  `docker pull brauner/julia3`.
 * The generic `Julia` images which reside in the `julia` and `julia3`
   folders are compiled with `MARCH` set to `core2` which will make them
   run on almost any system. To see how to adapt the image to a specific
@@ -38,7 +38,7 @@ following manner:
   `--volumes-from=DATACONTAINERNAME` flag among your `julia` containers.
   You will find the `Dockerfile` for this in the folder `jlib` and
   the image on `Docker Hub`. You can pull it with `docker pull
-  lordgarbage/jlib`.
+  brauner/jlib`.
 * Run `docker run --name=JULIADATA DATACONTAINERNAME true`
 * Run `docker run --volumes-from = JULIADATA JULIACONTAINERNAME`
 
