@@ -1,4 +1,4 @@
-FROM lordgarbage/debian:testing
+FROM brauner/debian:testing
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
