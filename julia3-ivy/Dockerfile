@@ -64,9 +64,9 @@ RUN echo "root:test" | chpasswd \
 && locale-gen \
 # set vim as default editor; vi-editing mode for bash
 && cd \
-&& printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi" > /home/docker/.bashrc \
+&& printf "# If not running interactively, don't do anything\n[[ \$- != *i* ]] && return\n\nalias ls='ls --color=auto'\n\nalias grep='grep --color=auto'\n\nPS1='[\u@\h \W]\\$ '\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\n# Enable vi editing mode.\nset -o vi\n" > /home/docker/.bashrc \
 # Set vi-editing mode
-&& printf "set editing-mode vi\n\nset keymap vi-command" > /home/docker/.inputrc
+&& printf "set editing-mode vi\n\nset keymap vi-command\n" > /home/docker/.inputrc
 
 ENV LANG en_IE.UTF-8
 ENV HOME /home/docker
