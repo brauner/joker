@@ -2,12 +2,12 @@ FROM ubuntu:latest
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-RUN printf "\npath-exclude=/usr/share/locale/*" >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf "\npath-include=/usr/share/locale/en*" >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf "\npath-include=/usr/share/locale/locale.alias" >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf "\npath-exclude=/usr/share/man/*" >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf "\npath-include=/usr/share/man/en*" >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf "\npath-include=/usr/share/man/man[1-9]/*" >> /etc/dpkg/dpkg.cfg.d/excludes \
+RUN printf '\npath-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+&& printf '\npath-include=/usr/share/locale/en*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+&& printf '\npath-include=/usr/share/locale/locale.alias' >> /etc/dpkg/dpkg.cfg.d/excludes \
+&& printf '\npath-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+&& printf '\npath-include=/usr/share/man/en*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+&& printf '\npath-include=/usr/share/man/man[1-9]/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
 && apt-get update -qq -y \
 && apt-get install -y --no-install-recommends \
    bzip2 \
@@ -28,16 +28,16 @@ RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
 && cd /tmp/julia \
 && git checkout release-0.3 \
-&& printf "prefix=/usr/local\n\nMARCH=core2\n" > Make.user \
+&& printf 'prefix=/usr/local\n\nMARCH=core2\n' > Make.user \
 && make \
 && make install \
 && cd \
 && rm -rf /tmp/julia
 
 # Add user
-RUN echo "root:test" | chpasswd \
+RUN echo 'root:test' | chpasswd \
 && useradd -u 1000 -m docker \
-&& echo "docker:test" | chpasswd \
+&& echo 'docker:test' | chpasswd \
 && usermod -s /bin/bash docker \
 && usermod -a -G 100 docker
 # && usermod -a -G sudo docker
