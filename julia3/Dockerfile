@@ -31,8 +31,8 @@ RUN cd /tmp \
 && printf 'prefix=/usr/local\n\nMARCH=core2\n' > Make.user \
 && make \
 && make install \
-&& cd \
-&& rm -rf /tmp/julia
+&& cd /tmp \
+&& rm -rf julia
 
 # Add user
 RUN echo 'root:test' | chpasswd \

@@ -33,7 +33,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
    libopenvg1-mesa \
    libglu1-mesa-dev \
 && apt-get clean \
-&& rm -rf /var/lib/apt/lists/*
+&& cd /var/lib/apt/lists \
+&& rm -rf *
 
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
@@ -43,8 +44,8 @@ RUN cd /tmp \
 && printf '\nMARCH=ivybridge\n' >> Make.user \
 && make \
 && make install \
-&& cd \
-&& rm -rf /tmp/julia
+&& cd /tmp \
+&& rm -rf julia
 
 # Add user
 RUN echo 'root:test' | chpasswd \
@@ -60,20 +61,23 @@ RUN echo 'root:test' | chpasswd \
 && usermod -a -G video docker \
 && groupmod -g 92 audio \
 && usermod -a -G audio docker \
-&& printf '\nen_IE.UTF-8 UTF-8\n' >> /etc/locale.gen \
+&& cd /etc \
+&& printf '\nen_IE.UTF-8 UTF-8\n' >> locale.gen \
 && locale-gen \
 # set vim as default editor; vi-editing mode for bash
-&& cd \
-&& printf 'options(repos=structure(c(CRAN='\''http://stat.ethz.ch/CRAN/'\'')))\n' > /home/docker/.Rprofile \
+&& cd /home/docker \
+&& printf 'options(repos=structure(c(CRAN='\''http://stat.ethz.ch/CRAN/'\'')))\n' > .Rprofile \
 # set vim as default editor; vi-editing mode for bash
-&& printf '# If not running interactively, don'\''t do anything\n[[ \$- != *i* ]] && return\n\nalias ls='\''ls --color=auto'\''\n\nalias grep='\''grep --color=auto'\''\n\nPS1='\''[\\u@\h \W]\\$ '\''\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\nexport OPENBLAS_NUM_THREADS=4\n\n# Enable vi editing mode.\nset -o vi\n' > /home/docker/.bashrc \
-&& printf '# If not running interactively, don'\''t do anything\n[[ \$- != *i* ]] && return\n\nalias ls='\''ls --color=auto'\''\n\nalias grep='\''grep --color=auto'\''\n\nPS1='\''[\\u@\h \W]\\$ '\''\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\nexport OPENBLAS_NUM_THREADS=4\n\n# Enable vi editing mode.\nset -o vi\n' > /root/.bashrc \
+# && printf '# If not running interactively, don'\''t do anything\n[[ \$- != *i* ]] && return\n\nalias ls='\''ls --color=auto'\''\n\nalias grep='\''grep --color=auto'\''\n\nPS1='\''[\\u@\h \W]\\$ '\''\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\nexport OPENBLAS_NUM_THREADS=4\n\n# Enable vi editing mode.\nset -o vi\n' > /home/docker/.bashrc \
+# && printf '# If not running interactively, don'\''t do anything\n[[ \$- != *i* ]] && return\n\nalias ls='\''ls --color=auto'\''\n\nalias grep='\''grep --color=auto'\''\n\nPS1='\''[\\u@\h \W]\\$ '\''\n\ncomplete -cf sudo\n\n# Set default editor.\nexport EDITOR=vim xterm\n\nexport OPENBLAS_NUM_THREADS=4\n\n# Enable vi editing mode.\nset -o vi\n' > /root/.bashrc \
 # Set vi-editing mode for R
-&& printf 'set editing-mode vi\n\nset keymap vi-command\n' > /home/docker/.inputrc \
-&& printf 'set editing-mode vi\n\nset keymap vi-command\n' > /root/.inputrc
+&& printf 'set editing-mode vi\n\nset keymap vi-command\n' > .inputrc \
+&& cd /root \
+&& printf 'set editing-mode vi\n\nset keymap vi-command\n' > .inputrc
 
 ENV LANG en_IE.UTF-8
 ENV HOME /home/docker
+ENV OPENBLAS_NUM_THREADS 4
 WORKDIR /home/docker
 USER docker
 
