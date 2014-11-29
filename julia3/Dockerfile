@@ -2,12 +2,15 @@ FROM ubuntu:latest
 
 MAINTAINER Christian Brauner christianvanbrauner[at]gmail.com
 
-RUN printf '\npath-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf '\npath-include=/usr/share/locale/en*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf '\npath-include=/usr/share/locale/locale.alias' >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf '\npath-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf '\npath-include=/usr/share/man/en*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-&& printf '\npath-include=/usr/share/man/man[1-9]/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+RUN export DEBIAN_FRONTEND=noninteractive \
+&& export DEBCONF_NONINTERACTIVE_SEEN=true \
+&& cd /etc/dpkg/dpkg.cfg.d \
+&& printf '\npath-exclude=/usr/share/locale/*' >> excludes \
+&& printf '\npath-include=/usr/share/locale/en*' >> excludes \
+&& printf '\npath-include=/usr/share/locale/locale.alias' >> excludes \
+&& printf '\npath-exclude=/usr/share/man/*' >> excludes \
+&& printf '\npath-include=/usr/share/man/en*' >> excludes \
+&& printf '\npath-include=/usr/share/man/man[1-9]/*' >> excludes \
 && apt-get update -qq -y \
 && apt-get install -y --no-install-recommends \
    bzip2 \
@@ -22,7 +25,8 @@ RUN printf '\npath-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes
    python \
    wget \
 && apt-get clean \
-&& rm -rf /var/lib/apt/lists/*
+&& cd /var/lib/apt/lists \
+&& rm -rf *
 
 RUN cd /tmp \
 && git clone git://github.com/JuliaLang/julia.git \
